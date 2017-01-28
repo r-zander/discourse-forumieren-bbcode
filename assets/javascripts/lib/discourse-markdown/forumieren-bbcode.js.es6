@@ -36,7 +36,7 @@ export function setup(helper) {
     'hr.bbcode-hr'
   ]);
 
-  const { register, replaceBBCode, rawBBCode, replaceBBCodeParamsRaw } = builders(helper);
+  const { register, replaceBBCode, rawBBCode } = builders(helper);
 
   replaceBBCode("justify", contents => ['div', {'style': "text-align:justify", 'class': 'bbcode-justify'}].concat(contents));
 
@@ -74,8 +74,6 @@ export function setup(helper) {
       }
     }
   });
-
-  const { register, replaceBBCode, rawBBCode, replaceBBCodeParamsRaw } = builders(helper);
 
   replaceBBCode("small", contents => ['span', {'style': 'font-size:x-small'}].concat(contents));
   replaceBBCode("highlight", contents => ['div', {'class': 'highlight'}].concat(contents));
