@@ -33,8 +33,26 @@ export function setup(helper) {
     'h2.bbcode-h2',
     'h3.bbcode-h3',
     'h4.bbcode-h4',
-    'hr.bbcode-hr'
+    'hr.bbcode-hr',
+    'div.highlight',
+    'div.sepquote',
+    'span.smallfont',
+    'span.bbcode-size',
+    'span.bbcode-color',
+    'span.bbcode-font'
   ]);
+
+  helper.whiteList({
+    custom(tag, name, value) {
+      if (tag === 'span' && name === 'style') {
+        return /^font-size:.*$/.exec(value) || /^color:.*$/.exec(value) || /^font-family:.*$/.exec(value);
+      }
+
+      if (tag === 'div' && name === 'style') {
+        return /^text-align:(center|left|right)$/.exec(value);
+      }
+    }
+  });
 
   const { register, replaceBBCode, rawBBCode } = builders(helper);
 
@@ -54,27 +72,6 @@ export function setup(helper) {
   /*******************************************************************************
    * VBulletin BBCodes
    */
-  helper.whiteList([
-    'div.highlight',
-    'div.sepquote',
-    'span.smallfont',
-    'span.bbcode-size',
-    'span.bbcode-color',
-    'span.bbcode-font'
-  ]);
-
-  helper.whiteList({
-    custom(tag, name, value) {
-      if (tag === 'span' && name === 'style') {
-        return /^font-size:.*$/.exec(value);
-      }
-
-      if (tag === 'div' && name === 'style') {
-        return /^text-align:(center|left|right)$/.exec(value);
-      }
-    }
-  });
-
   replaceBBCode("small", contents => ['span', {'style': 'font-size:x-small'}].concat(contents));
   replaceBBCode("highlight", contents => ['div', {'class': 'highlight'}].concat(contents));
 
