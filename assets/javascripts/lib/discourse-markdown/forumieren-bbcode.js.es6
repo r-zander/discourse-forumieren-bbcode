@@ -28,6 +28,9 @@ export function setup(helper) {
 
   helper.whiteList([
     'div.bbcode-justify',
+    'div.bbcode-left',
+    'div.bbcode-right',
+    'div.bbcode-center',
     'sub.bbcode-sub',
     'sup.bbcode-sup',
     'h2.bbcode-h2',
@@ -49,14 +52,12 @@ export function setup(helper) {
       }
 
       if (tag === 'div' && name === 'style') {
-        return /^text-align:(center|left|right)$/.exec(value);
+        return /^text-align:(center|left|right|justify)$/.exec(value);
       }
     }
   });
 
   const { register, replaceBBCode, rawBBCode } = builders(helper);
-
-  replaceBBCode("justify", contents => ['div', {'style': "text-align:justify", 'class': 'bbcode-justify'}].concat(contents));
 
   replaceBBCode("sub", contents => ['sub', {'class': 'bbcode-sub'}].concat(contents));
   replaceBBCode("sup", contents => ['sup', {'class': 'bbcode-sup'}].concat(contents));
@@ -75,8 +76,8 @@ export function setup(helper) {
   replaceBBCode("small", contents => ['span', {'style': 'font-size:x-small'}].concat(contents));
   replaceBBCode("highlight", contents => ['div', {'class': 'highlight'}].concat(contents));
 
-  ["left", "center", "right"].forEach(direction => {
-    replaceBBCode(direction, contents => ['div', {'style': "text-align:" + direction}].concat(contents));
+  ["left", "center", "right", "justify"].forEach(direction => {
+    register(direction, contents => ['div', {'class': 'bbcode-'+ direction, 'style': "text-align:" + direction}].concat(contents));
   });
 
   replaceBBCode('edit', contents =>  ['div', {'class': 'sepquote'}, ['span', { 'class': 'smallfont' }, "Edit:"], ['br'], ['br']].concat(contents));
